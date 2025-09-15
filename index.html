@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Instagram Follower Analyzer</title>
+  <title>Instagram Analyzer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Instagram Political Analyzer</h1>
-    <input type="text" id="username" placeholder="Enter Instagram username">
+    <h2>Instagram Political Leaning Checker</h2>
+    <input type="text" id="username" placeholder="Enter Instagram handle" />
     <button onclick="analyze()">Analyze</button>
-    <div id="result"></div>
+    <pre id="result"></pre>
   </div>
-  <script src="script.js"></script>
+  <script>
+    async function analyze() {
+      const username = document.getElementById("username").value;
+      const result = document.getElementById("result");
+      result.innerText = "Fetching...";
+      const res = await fetch("/analyze", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username})
+      });
+      const data = await res.json();
+      result.innerText = JSON.stringify(data, null, 2);
+    }
+  </script>
 </body>
 </html>
